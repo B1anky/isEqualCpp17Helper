@@ -1,4 +1,4 @@
-/*MIT License
+/* MIT License
  *
  * Copyright (c) 2020 B1anky
  *
@@ -212,25 +212,27 @@ int main(){
     std::vector<double>   doubleVector = {1.2, 36.6, 25.11, 22.44};
 
     std::list<int>        intList      = {2, 36, 25, 22};
-    std::map<int, double> map1         = { {1, 1.2}, {36, 36.6}, {25, 25.11}, {22, 22.44} };
-    std::map<int, double> map2         = { {1, 1.2}, {36, 36.6}, {25, 25.11}, {22, 22.44} };
-    std::array<int, 3>    stdArray1    = { 1, 2, 3 };
-    std::array<int, 3>    stdArray2    = { 1, 2, 3 };
-    std::array<double, 1> stdArray3    = { 1.0 };
+
+    ImplictlyCompareMeCorrectly test1(1, 2.3,  64.36435, {1, 2, 3});
+    ImplictlyCompareMeCorrectly test2(1, 2.3,  64.36435, {1, 2, 3});
+    ImplictlyCompareMeCorrectly test3(2, 4.6, 128.72870, {4, 5, 6});
 
     std::cout << std::boolalpha;
-
-    std::cout << "if a std::vector<float> and a std::vector<double>\nwith equivalent initializer list are equal: "
-              << isEqual(floatVector, doubleVector, 1E-5) << std::endl << std::endl;
 
     std::cout << "if 1 and 0 are equal: " << isEqual(1, 0) << std::endl << std::endl;
 
     std::cout << "if 1 and 1 are equal: " << isEqual(1, 1) << std::endl << std::endl;
 
+    std::cout << "if 1 and 2 are equal with a tolerance of ~1.0: " << isEqual(1, 2, 1.0) << std::endl << std::endl;
+
     std::cout << "if 1.0 and 2.9 are equal with a tolerance of ~1.0: " << isEqual(1.0, 2.9, 1.0) << std::endl << std::endl;
 
     std::cout << "if 1.0 and 1.0 are equal with a tolerance of ~0.0: " << isEqual(1.0, 1.0, 0.0) << std::endl << std::endl;
 
+    std::cout << "if a std::vector<float> and a std::vector<double>\nwith equivalent initializer list are equal: "
+              << isEqual(floatVector, doubleVector, 1E-5) << std::endl << std::endl;
+
+    //This will be the else case that always returns false since we're comparing an iterable with a non-iterable
     std::cout << "if a std::vector<float> and a float are equal: " << isEqual(floatVector, 2.9) << std::endl << std::endl;
 
     std::cout << "if a std::vector<float> and a std::list<int>\nwith similar initializer lists are equal with a default tolerance: "
@@ -239,21 +241,20 @@ int main(){
     std::cout << "if a std::vector<float> and a std::list<int>\nwith similar initializer lists are equal with a 1.0 tolerance: "
               << isEqual(floatVector, intList, 1.0) << std::endl << std::endl;
 
+    std::cout << "if a custom class with an operator== is well-defined\nwith two similarly initialized classes are equal: " << isEqual(test1, test2) << std::endl << std::endl;
+
+    std::cout << "if a custom class with an operator== is well-defined\nwith two differently initialized classes are equal: " << isEqual(test1, test3) << std::endl << std::endl;
 
     /*
      * Would be nice if we could somehow get implicit std::tuple / pair operator equals such that we could "iterate" over it somehow and compare them like arrays,
      * using isEqual to compare the two elements
      *
-    std::cout << "if a std::map<int, double>'s values and a std::vector<double>\nwith equivalent initializer lists are equal and a default tolerance: "
-              << isEqual(map1, map2) << std::endl << std::endl;
-    */
-    ImplictlyCompareMeCorrectly test1(1, 2.3, 64.36435, {1, 2, 3});
-    ImplictlyCompareMeCorrectly test2(1, 2.3, 64.36435, {1, 2, 3});
-
-    std::cout << isEqual(test1, 1) << std::endl << std::endl;
-
-    std::cout << isEqual(stdArray1, stdArray2) << std::endl << std::endl;
-    std::cout << isEqual(stdArray1, stdArray3) << std::endl << std::endl;
+     *    std::map<int, double> map1 = { {1, 1.2}, {36, 36.6}, {25, 25.11}, {22, 22.44} };
+     *    std::map<int, double> map2 = { {1, 1.2}, {36, 36.6}, {25, 25.11}, {22, 22.44} };
+     *
+     * std::cout << "if a std::map<int, double>'s values and a std::vector<double>\nwith equivalent initializer lists are equal with a default tolerance: "
+     *           << isEqual(map1, map2) << std::endl << std::endl;
+     */
 
     return 0;
 
