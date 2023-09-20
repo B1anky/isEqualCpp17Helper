@@ -198,7 +198,14 @@ static inline bool isEqual(Comparable1 comparable1, Comparable2 comparable2, flo
 
         }
 
-    }else if constexpr( std::is_fundamental<Comparable1>::value && std::is_fundamental<Comparable2>::value ){
+    }
+    else if constexpr( std::is_null_pointer_v<Comparable1> && std::is_null_pointer_v<Comparable2> ){
+
+        (void) tolerance;
+        isEqualRet = true;
+
+    }
+    else if constexpr( std::is_fundamental<Comparable1>::value && std::is_fundamental<Comparable2>::value ){
 
         isEqualRet = (fabs(comparable1 - comparable2) <= tolerance);
 
@@ -453,7 +460,7 @@ int main(){
      *  int* otherIntPtr = intPtr;
      *  isEqual(intPtr, otherIntPtr);  //will be true
      *  isEqual(nullptr, otherIntPtr); //will be false
-     *  isEqual(nullptr, nullptr);     //one of the few things that won't compile, keep it commented out or your compiler will go Brrrrrrrrr
+     *  isEqual(nullptr, nullptr);
      *
      *  int* ourNullptr      = nullptr;
      *  int* ourOtherNullptr = nullptr;
